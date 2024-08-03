@@ -21,19 +21,22 @@ jobs:
       - name: Checkstyle
         run: mvn checkstyle:checkstyle
 
-      # Setup Java 11 to be default (sonar-scanner requirement as of 5.x)
-      - name: Set Java 11
+      # Setup Java 11
+      - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
 
-      # Setup sonar-scanner
-      - name: Setup SonarQube
-        uses: SonarSource/sonarcloud-github-action@master
+      # Install SonarScanner
+      - name: Install SonarScanner
+        run: |
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+          unzip sonar-scanner-cli-4.7.0.2747-linux.zip
+          export PATH=$PATH:$(pwd)/sonar-scanner-4.7.0.2747-linux/bin
 
-      # Run sonar-scanner
-      - name: SonarQube Scan
+      # Run SonarScanner
+      - name: Run SonarQube Scan
         run: |
           sonar-scanner \
             -Dsonar.host.url=${{ secrets.SONAR_URL }} \
@@ -46,10 +49,10 @@ jobs:
             -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
             -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
 
-      # Check the Quality Gate status.
+      # Check the Quality Gate status
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
+        uses: sonarsource/sonarqube-quality-gate-action@v1
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
