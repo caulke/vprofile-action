@@ -15,8 +15,12 @@ jobs:
       # Checkout the source code
       - name: Code checkout
         uses: actions/checkout@v4
+      # Clean up
+      - name: Clean repository
+        run: git clean -fdx
 
-      # Run Maven tests
+
+       # Run Maven tests
       - name: Maven test
         run: mvn test
 
