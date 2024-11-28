@@ -46,22 +46,25 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-       - name: SonarQube Quality Gate Check
-         id: sonarqube-quality-gate-check
-         uses: sonarsource/sonarqube-quality-gate-action@master
+      - name: SonarQube Quality Gate Check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
 
-    BUILD_AND_PUBLISH:
+  BUILD_AND_PUBLISH:
     needs: Testing
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{ env.AWS_REGION }}
+      ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
     steps:
       - name: Code checkout
         uses: actions/checkout@v4
 
       - name: Build & Upload Image to ECR
-        uses: appleboy/docker-ecr-action@v0.0.3 # Use a stable version
+        uses: appleboy/docker-ecr-action@v0.0.3
         with:
           access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
