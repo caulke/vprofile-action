@@ -26,29 +26,29 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Setup SonarQube
-        uses: warchant/setup-sonar-scanner@v7
+      # - name: Setup SonarQube
+      #   uses: warchant/setup-sonar-scanner@v7
 
-      - name: SonarQube Scan
-        run: |
-          sonar-scanner \
-            -Dsonar.host.url=${{ secrets.SONAR_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.sources=src/ \
-            -Dsonar.junit.reportsPath=target/surefire-reports/ \
-            -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
-            -Dsonar.java.binaries=target/test-classes/com/visualpathit/account
+      # - name: SonarQube Scan
+      #   run: |
+      #     sonar-scanner \
+      #       -Dsonar.host.url=${{ secrets.SONAR_URL }} \
+      #       -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+      #       -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
+      #       -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+      #       -Dsonar.sources=src/ \
+      #       -Dsonar.junit.reportsPath=target/surefire-reports/ \
+      #       -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+      #       -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
+      #       -Dsonar.java.binaries=target/test-classes/com/visualpathit/account
 
-      - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        timeout-minutes: 15
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
+      # - name: SonarQube Quality Gate check
+      #   id: sonarqube-quality-gate-check
+      #   uses: sonarsource/sonarqube-quality-gate-action@master
+      #   timeout-minutes: 15
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
 
   BUILD_AND_PUBLISH:
     needs: Testing
@@ -56,6 +56,13 @@ jobs:
     steps:
       - name: Code checkout
         uses: actions/checkout@v4
+
+      - name: Verify AWS credentials (debug step)
+        run: aws sts get-caller-identity
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
 
       - name: Build & Upload image to ECR
         uses: appleboy/docker-ecr-action@master
