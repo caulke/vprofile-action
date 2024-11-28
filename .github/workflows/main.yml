@@ -47,22 +47,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
 
-  BUILD_AND_PUBLISH:
-    needs: Testing
-    runs-on: ubuntu-latest
-    steps:
-      - name: Code checkout
-        uses: actions/checkout@v4
+        - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build & Upload image to ECR
-        uses: appleboy/docker-ecr-action@v0.0.3
-        with:
-          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          registry: ${{ secrets.REGISTRY }}
-          repo: ${{ secrets.ECR_REPOSITORY }}
-          region: ${{ secrets.AWS_REGION }}
-          tags: latest,${{ github.run_number }}
-          dockerfile: ./Dockerfile
-          context: ./
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest .
+          docker tag ${{ secrets.REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest ${{ secrets.REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.run_number }}
+          docker push ${{ secrets.REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+          docker push ${{ secrets.REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.run_number }}
+
 
