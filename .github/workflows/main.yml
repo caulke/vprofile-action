@@ -1,4 +1,4 @@
-name: vprofile actions
+name: kelvin-projects
 on: 
   workflow_dispatch:
 
