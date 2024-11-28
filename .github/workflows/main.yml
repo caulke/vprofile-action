@@ -56,12 +56,6 @@ jobs:
   BUILD_AND_PUBLISH:
     needs: Testing
     runs-on: ubuntu-latest
-    env:
-      AWS_REGION: ${{ env.AWS_REGION }}
-      ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
     steps:
       - name: Code checkout
         uses: actions/checkout@v4
@@ -73,9 +67,9 @@ jobs:
           registry-type: private
           skip-logout: false
         env:
-          AWS_REGION: ${{ env.AWS_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
 
       - name: Build & Upload Image to ECR
         uses: appleboy/docker-ecr-action@v0.0.3
