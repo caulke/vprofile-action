@@ -27,7 +27,7 @@ jobs:
       - name: Setup SonarQube
         uses: warchant/setup-sonar-scanner@v7
 
-            - name: SonarQube Scan
+      - name: SonarQube Scan
         run: |
           sonar-scanner \
             -Dsonar.host.url=${{ secrets.SONAR_URL }} \
@@ -39,7 +39,6 @@ jobs:
             -Dsonar.java.binaries=target/test-classes/com/visualpathit/account
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
 
       - name: SonarQube Quality Gate Check
         id: sonarqube-quality-gate-check
