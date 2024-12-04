@@ -66,13 +66,6 @@ jobs:
       - name: Print config file
         run: cat ~/.kube/config
 
-      # - name: Login to ECR
-      #   run: |
-      #     kubectl create secret docker-registry regcred \
-      #       --docker-server=${{ secrets.REGISTRY }} \
-      #       --docker-username=AWS \
-      #       --docker-password=$(aws ecr get-login-password)
-
       - name: Deploy Helm
         uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
         with:
@@ -86,3 +79,7 @@ jobs:
             appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }},
             apptag=${{ github.run_number }}
           name: vprofile-stack
+          action: install
+          dry-run: false
+          timeout: 300s
+          update-deps: true
