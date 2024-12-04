@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-    BUILD_AND_PUBLISH:
+  BUILD_AND_PUBLISH:
     needs: Testing
     runs-on: ubuntu-latest
     steps:
@@ -52,8 +52,7 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-
-    DeployToEKS:
+  DeployToEKS:
     needs: BUILD_AND_PUBLISH
     runs-on: ubuntu-latest
     steps:
@@ -90,4 +89,3 @@ jobs:
           namespace: default
           values: appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }},apptag=${{ github.run_number }}
           name: vprofile-stack
-
