@@ -1,5 +1,5 @@
 name: vprofile actions
-on: 
+on:
   workflow_dispatch:
 
 env:
@@ -76,8 +76,7 @@ jobs:
           chart-path: helm/vprofilecharts
           namespace: default
           values: |
-            appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }}
-            apptag=${{ github.run_number }}
+            appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }},apptag=${{ github.run_number }}
           name: vprofile-stack
           action: install
           dry-run: false
