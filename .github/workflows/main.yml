@@ -66,7 +66,7 @@ jobs:
       - name: Validate Kube Config
         run: cat ~/.kube/config
 
-      - name: Deploy Helm Chart
+      - name: Apply Helm Chart
         uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -82,3 +82,7 @@ jobs:
           dry-run: false
           timeout: 300s
           update-deps: true
+
+      - name: Apply Kustomized Resources
+        run: |
+          kubectl apply -k .
