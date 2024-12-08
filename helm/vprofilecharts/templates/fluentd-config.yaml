@@ -452,15 +452,4 @@ data:
         overflow_action block
       </buffer>
     </match>
-    <source>
-  @id journald-container-runtime
-  @type systemd
-  filters [{ "_SYSTEMD_UNIT": "docker.service" }]
-  <storage>
-    @type local
-    persistent true
-  </storage>
-  read_from_head true
-  tag container-runtime
-</source>
 
