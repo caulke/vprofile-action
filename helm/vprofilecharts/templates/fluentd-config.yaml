@@ -335,7 +335,6 @@ data:
     <source>
       @id journald-container-runtime
       @type systemd
-      filters [{ "_SYSTEMD_UNIT": "{{ .Values.container_runtime | default 'docker' }}.service"
       <storage>
         @type local
         persistent true
