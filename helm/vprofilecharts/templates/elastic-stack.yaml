@@ -327,11 +327,11 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"   # Disable SSL redirect if using HTTP
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"  # Optional: Adjust body size limit
 spec:
-  ingressClassName: nginx
+  ingressClassName: 
   rules:
   - http:
       paths:
-      - path: /
+      - path: "/kibana"
         pathType: Prefix
         backend:
           service:

@@ -10,7 +10,7 @@ spec:
   - host: 
     http:
       paths:
-      - path: /
+      - path: "/vpro"
         pathType: Prefix
         backend:
           service:
