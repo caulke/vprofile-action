@@ -10,7 +10,7 @@ spec:
   - host:  # Matches any host
     http:
       paths:
-      - path: "/vpro"  # Unique path to avoid conflicts
+      - path: /vpro  # Unique path to avoid conflicts
         pathType: Prefix
         backend:
           service:

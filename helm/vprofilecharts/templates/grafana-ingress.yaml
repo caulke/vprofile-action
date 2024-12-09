@@ -12,7 +12,7 @@ spec:
   - host:  # Matches any host
     http:
       paths:
-      - path: "/grafana"  # Ensure the path is unique to avoid conflicts
+      - path: /grafana  # Ensure the path is unique to avoid conflicts
         pathType: Prefix
         backend:
           service:
