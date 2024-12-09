@@ -7,14 +7,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: 
+  - host: "*"  # Matches any host
     http:
       paths:
-      - path: "/vpro"
+      - path: "/vpro"  # Unique path to avoid conflicts
         pathType: Prefix
         backend:
           service:
-            name: my-app
+            name: my-app  # Replace with your actual service name
             port:
               number: 8080
-####
