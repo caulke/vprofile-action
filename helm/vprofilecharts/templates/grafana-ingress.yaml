@@ -9,13 +9,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - http:
+  - host: "*"  # Matches any host
+    http:
       paths:
-      - path: /grafana
+      - path: "/grafana"  # Ensure the path is unique to avoid conflicts
         pathType: Prefix
         backend:
           service:
             name: kube-prometheus-stack-grafana
             port:
               number: 80
-

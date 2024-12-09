@@ -329,9 +329,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - http:
+  - host: "*"  # Matches any host
+    http:
       paths:
-      - path: "/kibana"
+      - path: "/kibana"  # Ensure the path is unique to avoid conflicts
         pathType: Prefix
         backend:
           service:
